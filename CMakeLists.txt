@@ -51,3 +51,5 @@ set_target_properties(NVFSPatcher PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
 
+add_subdirectory(minhook)
+target_link_libraries(NVFSPatcher PRIVATE minhook)
