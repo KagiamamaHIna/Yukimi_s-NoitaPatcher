@@ -66,3 +66,22 @@ uintptr_t ResolveRelativeAddress(uintptr_t address, int offset, int instructionS
 	// 真实地址 = 当前指令地址 + 指令长度 + 相对偏移量
 	return address + instructionSize + relativeOffset;
 }
+
+// By NoitaPatcher
+void* FindFuncStart(void* func_body)
+{
+	auto it = (std::uint8_t*)func_body;
+	for (;; --it) {
+		if (
+			((std::uintptr_t)it % 16 == 0) &&        // Properly aligned
+			(it[-1] == 0xcc ||                       // Alignment byte *or* Previous func return
+				it[-1] == 0xc3 || it[-3] == 0xc2) &&
+			(it[0] >= 0x50 && it[0] < 0x58) &&       // Push register
+			(
+				(it[1] >= 0x50 && it[1] < 0x58) ||   // Push register *or* mov ebp, esp
+				(it[1] == 0x8b && it[2] == 0xec)
+				)
+		)
+			return it;
+	};
+}

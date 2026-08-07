@@ -6,6 +6,7 @@
 #include "MinHook.h"
 #include "YNoitaPatcher/detail/auto/YNoitaPatcher_export.h"
 #include "YNoitaPatcher/NVFS.h"
+#include "YNoitaPatcher/WorldInfo.h"
 
 extern "C" {
 	YNOITAPATCHER_EXPORT void YNPMHInit() {
