@@ -1,4 +1,4 @@
-#include "NVFSPatcher/detail/MemoryPattern.h"
+#include "YNoitaPatcher/detail/MemoryPattern.h"
 
 // 将两字符的十六进制字符串转换为字节
 #define NVFS_INRANGE(x,a,b)  (x >= a && x <= b)

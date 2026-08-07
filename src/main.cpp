@@ -4,11 +4,11 @@
 #include <Windows.h>
 
 #include "MinHook.h"
-#include "NVFSPatcher/detail/auto/NVFSPatcher_export.h"
-#include "NVFSPatcher/NVFS.h"
+#include "YNoitaPatcher/detail/auto/YNoitaPatcher_export.h"
+#include "YNoitaPatcher/NVFS.h"
 
 extern "C" {
-	NVFSPATCHER_EXPORT void NVFSMHInit() {
+	YNOITAPATCHER_EXPORT void YNPMHInit() {
 		MH_Initialize();
 	}
 	BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
