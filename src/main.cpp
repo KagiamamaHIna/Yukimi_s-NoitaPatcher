@@ -7,10 +7,18 @@
 #include "YNoitaPatcher/detail/auto/YNoitaPatcher_export.h"
 #include "YNoitaPatcher/NVFS.h"
 #include "YNoitaPatcher/WorldInfo.h"
+#include "YNoitaPatcher/HookCell.h"
 
+bool ynp_initialised = false;
 extern "C" {
 	YNOITAPATCHER_EXPORT void YNPMHInit() {
-		MH_Initialize();
+		if (!ynp_initialised) {
+			MH_Initialize();
+
+			HookCellInit();
+
+			ynp_initialised = true;
+		}
 	}
 	BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	{
