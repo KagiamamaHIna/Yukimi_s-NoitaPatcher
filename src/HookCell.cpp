@@ -12,7 +12,7 @@ CSoildCell vtable 往前查出现的第一个C7开头的指令
 C7 ? 58 01 00 00 00 C7 ? 5C 00 00 00 00 66 ? ? 60 00 01
 */
 
-static uint32_t FindCLiquidCellVtable() {
+uint32_t FindCLiquidCellVtable() {
 	uint32_t result = FindPatternInModule(nullptr, "C7 ? ? 00 00 00 00 89 ? ? 8B ? ? 89 ? ? 8B ? ? C7 ? ? ? ? ? C7 ? ? 03 00 00 00");
 	if (result == 0) {
 		return 0;
@@ -21,7 +21,7 @@ static uint32_t FindCLiquidCellVtable() {
 	return *(uint32_t*)(result);
 }
 
-static uint32_t FindCGasCellVtable() {
+uint32_t FindCGasCellVtable() {
 	uint32_t result = FindPatternInModule(nullptr, "89 ? 20 8B ? 10 89 ? 24");
 	if (result == 0) {
 		return 0;
@@ -34,7 +34,7 @@ static uint32_t FindCGasCellVtable() {
 	return *(uint32_t*)(result);
 }
 
-static uint32_t FindCFireCellVtable() {
+uint32_t FindCFireCellVtable() {
 	uint32_t result = FindPatternInModule(nullptr, "8B 45 10 ? ? ? ? ? ? ? ? ? C7 ? 20 00 00 00 00 C6 ? 24 01");
 	if (result == 0) {
 		return 0;
@@ -47,7 +47,7 @@ static uint32_t FindCFireCellVtable() {
 	return *(uint32_t*)(result);
 }
 
-static uint32_t FindCSoildCellVtable() {
+uint32_t FindCSoildCellVtable() {
 	uint32_t temp = FindPatternInModule(nullptr, "C7 ? 58 01 00 00 00 C7 ? 5C 00 00 00 00 66 ? ? 60 00 01");
 	if (temp == 0) {
 		return 0;
@@ -121,6 +121,7 @@ void HookCellInit() {
 		std::cerr << "CSoildCellVtable is nullptr\n";
 		return;
 	}
+	//Hook CellUpdate
 	size_t offset = 21 * sizeof(void*);
 	LPVOID* tempFn = *reinterpret_cast<LPVOID**>(CLiquidCellVtable + offset);
 	MH_CreateHook(tempFn, FnToVoidp(&CellHooks::HookCLiquidCellUpdate), reinterpret_cast<LPVOID*>(&CLiquidCellUpdate));
@@ -137,6 +138,7 @@ void HookCellInit() {
 	tempFn = *reinterpret_cast<LPVOID**>(CSoildCellVtable + offset);
 	MH_CreateHook(tempFn, FnToVoidp(&CellHooks::HookCSoildCellUpdate), reinterpret_cast<LPVOID*>(&CSoildCellUpdate));
 	MH_EnableHook(tempFn);
+
 }
 
 bool EnableCellUpdate(bool enabled) {
